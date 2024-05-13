@@ -29,15 +29,26 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     // Send a ping to confirm a successful connection
+const roomsCollection = client.db('staySphereDB').collection('rooms');
+const bookingsCollection = client.db('staySphereDB').collection('bookings');
+
+    // get all rooms data from database
+     app.get('/rooms', async (req, res) => {
+      const result = await roomsCollection.find().toArray();
+      res.send(result);
+     })
+
+
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
