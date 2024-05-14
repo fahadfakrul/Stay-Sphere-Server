@@ -55,6 +55,13 @@ const bookingsCollection = client.db('staySphereDB').collection('bookings');
       res.send(result);
      })
 
+     //get all bookings by a user
+     app.get('bookings/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await bookingsCollection.find(query).toArray();
+      res.send(result);
+     })
 
     await client.db("admin").command({ ping: 1 });
     console.log(
