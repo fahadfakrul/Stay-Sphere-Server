@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 
 const port = process.env.PORT || 5000;
@@ -40,6 +40,20 @@ const bookingsCollection = client.db('staySphereDB').collection('bookings');
       res.send(result);
      })
 
+    //get a single room from database
+     app.get('/room/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await roomsCollection.findOne(query);
+      res.send(result)
+     })
+
+     //save a booking in the database
+     app.post('/booking', async (req, res) => {
+      const roomData = req.body;
+      const result = await bookingsCollection.insertOne(roomData);
+      res.send(result);
+     })
 
 
     await client.db("admin").command({ ping: 1 });
