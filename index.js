@@ -62,6 +62,16 @@ const bookingsCollection = client.db('staySphereDB').collection('bookings');
       res.send(result);
      })
 
+     //update booking date
+     app.patch('/booking-update/:id', async (req, res) => {
+      const id = req.params.id;
+      const bookingDate = req.body;
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = { $set: bookingDate };
+      const result = await bookingsCollection.updateOne(query, updateDoc);
+      res.send(result);
+     })
+
      //get all bookings by a user
      app.get('/bookings/:email', async (req, res) => {
       const email = req.params.email;
