@@ -90,6 +90,20 @@ const reviewsCollection = client.db('staySphereDB').collection('reviews');
       console.log(result);
      })
 
+     //get revies from database
+     app.get('/reviews/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { id: id};
+      const result = await reviewsCollection.find(query).toArray();
+      res.send(result)
+     })
+
+     //get all reviews from database
+     app.get('/reviews', async (req, res) => {
+      const result = await reviewsCollection.find().sort({timestamp: -1}).toArray();
+      res.send(result);
+     })
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
