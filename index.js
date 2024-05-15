@@ -33,6 +33,7 @@ async function run() {
     // Send a ping to confirm a successful connection
 const roomsCollection = client.db('staySphereDB').collection('rooms');
 const bookingsCollection = client.db('staySphereDB').collection('bookings');
+const reviewsCollection = client.db('staySphereDB').collection('reviews');
 
     // get all rooms data from database
      app.get('/rooms', async (req, res) => {
@@ -79,6 +80,14 @@ const bookingsCollection = client.db('staySphereDB').collection('bookings');
       const result = await bookingsCollection.find(query).toArray();
       console.log(result);
       res.send(result);
+     })
+
+     //save a review in the database
+     app.post('/reviews', async (req, res) => {
+      const reviewsData = req.body;
+      const result = await reviewsCollection.insertOne(reviewsData);
+      res.send(result);
+      console.log(result);
      })
 
     await client.db("admin").command({ ping: 1 });
