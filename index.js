@@ -54,12 +54,20 @@ const bookingsCollection = client.db('staySphereDB').collection('bookings');
       const result = await bookingsCollection.insertOne(roomData);
       res.send(result);
      })
+     //delete a booking in the database
+     app.delete('/booking/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await bookingsCollection.deleteOne(query);
+      res.send(result);
+     })
 
      //get all bookings by a user
-     app.get('bookings/:email', async (req, res) => {
+     app.get('/bookings/:email', async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
       const result = await bookingsCollection.find(query).toArray();
+      console.log(result);
       res.send(result);
      })
 
