@@ -37,7 +37,16 @@ const reviewsCollection = client.db('staySphereDB').collection('reviews');
 
     // get all rooms data from database
      app.get('/rooms', async (req, res) => {
-      const result = await roomsCollection.find().toArray();
+      const filter = req.query.filter
+      let query = {}
+      if (filter) {
+        const [lowerBound, upperBound] = filter.split('-').map(Number);
+        if (!isNaN(lowerBound) && !isNaN(upperBound)) {
+          // Adjust the query to filter rooms based on price range
+          query = { price_per_night: { $gte: lowerBound, $lte: upperBound } };
+        }
+      }
+      const result = await roomsCollection.find(query).toArray();
       res.send(result);
      })
 
