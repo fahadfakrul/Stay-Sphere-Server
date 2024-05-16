@@ -57,6 +57,15 @@ const reviewsCollection = client.db('staySphereDB').collection('reviews');
       const result = await roomsCollection.findOne(query);
       res.send(result)
      })
+    //patch a single room from database
+     app.patch('/rooms/:id', async (req, res) => {
+      const id = req.params.id;
+      const {availability} = req.body;
+      const query = { _id:  new ObjectId(id)}
+      const updateDoc = {$set: {availability}}
+      const result = await roomsCollection.updateOne(query,updateDoc);
+      res.send(result)
+     })
 
      //save a booking in the database
      app.post('/booking', async (req, res) => {
